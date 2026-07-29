@@ -1,0 +1,14 @@
+{
+  "name": "mini-messageboard-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "node --watch src/app.js",
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

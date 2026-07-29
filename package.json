@@ -1,0 +1,15 @@
+{
+  "name": "mini-messageboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tablon de mensajes full-stack: API Express + SPA React",
+  "scripts": {
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "setup": "npm install && npm --prefix server install && npm --prefix client install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
