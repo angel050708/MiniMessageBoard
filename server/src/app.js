@@ -1,6 +1,12 @@
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import express from "express";
 
 import messagesRouter from "./routes/messages.js";
+
+const CLIENT_DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "client", "dist");
 
 const app = express();
 
@@ -21,9 +27,22 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/messages", messagesRouter);
 
-app.use((req, res) => {
+app.use("/api", (req, res) => {
   res.status(404).json({ error: `No existe la ruta ${req.method} ${req.originalUrl}` });
 });
+
+// En producción este mismo proceso sirve la SPA compilada: un solo puerto y
+// mismo origen, así que no hace falta ni proxy ni CORS. En desarrollo la
+// carpeta no existe y de esto se encarga Vite.
+if (existsSync(CLIENT_DIST)) {
+  app.use(express.static(CLIENT_DIST));
+
+  // Las rutas del router viven solo en el cliente: cualquier URL que no sea un
+  // fichero real devuelve el index para que React Router la resuelva.
+  app.use((req, res) => {
+    res.sendFile(join(CLIENT_DIST, "index.html"));
+  });
+}
 
 // El body parser lanza errores con `status` (JSON malformado, payload gigante).
 // Sin este handler Express respondería HTML y el cliente fallaría al parsearlo.

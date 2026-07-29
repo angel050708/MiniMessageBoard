@@ -133,8 +133,37 @@ inválido. Para los lectores de pantalla los campos siguen marcados con `aria-re
 
 El navegador solo habla con `localhost:5173`. Vite reenvía todo lo que empiece por `/api` a
 `localhost:3000` (`vite.config.js`), así que para el navegador es el mismo origen y no hay CORS que
-configurar. En producción se construye el cliente (`npm run build`) y se sirve el `dist/` detrás del
-mismo dominio que la API.
+configurar.
+
+En producción no hay dos servidores: Vite es solo una herramienta de desarrollo. `npm run build`
+compila el cliente a `client/dist` y Express sirve esa carpeta además de la API, en un único puerto
+(`server/src/app.js`). Como el origen es el mismo, el proxy deja de hacer falta.
+
+---
+
+## Desplegar
+
+El repositorio se despliega como **un solo servicio**. Cualquier plataforma que ejecute Node
+(Railway, Render, Fly) necesita estos dos comandos, ya definidos en el `package.json` de la raíz:
+
+| Fase  | Comando         | Qué hace                                                        |
+| ----- | --------------- | --------------------------------------------------------------- |
+| Build | `npm run build` | instala las dependencias de `server/` y `client/` y compila la SPA |
+| Start | `npm start`     | arranca Express, que sirve `client/dist` y `/api` a la vez        |
+
+No hay que configurar el puerto: el servidor lee `process.env.PORT`, que es justo lo que inyecta la
+plataforma.
+
+Detalles que importan al desplegar:
+
+- `client/dist` está en `.gitignore` a propósito. Se genera en el build de cada despliegue, no se
+  sube al repositorio.
+- El build del cliente instala sus devDependencies con `--include=dev` porque Vite es una de ellas y
+  las plataformas suelen omitir las de desarrollo cuando `NODE_ENV=production`.
+- Cualquier URL que no sea un fichero real ni empiece por `/api` devuelve `index.html`, para que
+  React Router resuelva los enlaces profundos (entrar directo a `/messages/<id>` funciona).
+- Los mensajes siguen viviendo en memoria: cada reinicio o redespliegue del servicio los devuelve a
+  los dos de ejemplo. Eso se arregla con una base de datos, no con el despliegue.
 
 ---
 
