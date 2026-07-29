@@ -4,6 +4,18 @@ import messagesRouter from "./routes/messages.js";
 
 const app = express();
 
+// Traza cada petición al terminar la respuesta, cuando ya se conoce el status.
+app.use((req, res, next) => {
+  const startedAt = performance.now();
+
+  res.on("finish", () => {
+    const ms = (performance.now() - startedAt).toFixed(1);
+    console.log(`${req.method} ${req.originalUrl} -> ${res.statusCode} (${ms} ms)`);
+  });
+
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
