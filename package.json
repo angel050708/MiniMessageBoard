@@ -11,7 +11,7 @@
     "setup": "npm install && npm --prefix server install && npm --prefix client install"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
