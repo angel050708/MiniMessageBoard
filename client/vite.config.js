@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    // Evita CORS: el navegador solo habla con :5173 y Vite reenvia /api al backend.
+    // Mismo origen para el navegador, sin CORS que configurar.
     proxy: {
       "/api": `http://localhost:${API_PORT}`,
     },

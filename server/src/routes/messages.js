@@ -5,7 +5,7 @@ import { Router } from "express";
 const USER_MAX_LENGTH = 32;
 const TEXT_MAX_LENGTH = 500;
 
-// Almacén en memoria: se reinicia con el servidor. Suficiente para el ejercicio.
+// En memoria: cada reinicio del servidor vuelve a estos dos.
 const messages = [
   {
     id: randomUUID(),

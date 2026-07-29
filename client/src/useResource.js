@@ -2,11 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 const LOADING = { status: "loading", data: null, error: null };
 
-/**
- * Ejecuta un loader asíncrono y expone su ciclo de vida completo
- * (cargando / listo / error) más un `reload` para reintentar.
- * El loader recibe un AbortSignal para cancelar si el componente se desmonta.
- */
+// El loader recibe un AbortSignal y debe ser estable entre renders.
 export function useResource(loader) {
   const [state, setState] = useState(LOADING);
   const [attempt, setAttempt] = useState(0);

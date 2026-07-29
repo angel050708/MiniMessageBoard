@@ -61,7 +61,7 @@ body {
   font-feature-settings: "tnum" 1;
 }
 
-/* Grano: textura fija que da atmósfera sin pesar en el DOM. */
+/* Grano. */
 body::before {
   content: "";
   position: fixed;
@@ -417,7 +417,7 @@ textarea {
   background-color: var(--ink-700);
 }
 
-/* Perforación vertical: el borde troquelado del papel de teletipo. */
+/* Troquelado del papel de teletipo. */
 .dispatch__rail::after {
   content: "";
   position: absolute;
@@ -586,7 +586,7 @@ textarea {
   color: var(--danger);
 }
 
-/* El icono acompaña al color: el error no se comunica solo con rojo. */
+/* El error no se comunica solo con el color. */
 .field__error::before {
   content: "!";
   display: inline-flex;
